@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 from torch.autograd import Variable
-import pickle # for accuracies saving
 import math
 import dlc_practical_prologue as prologue
 
