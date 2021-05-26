@@ -7,7 +7,6 @@ import math
 
 class Relu(Module):
     """
-        Input: Module
         Method: forward()
                 backward()
     """
@@ -26,19 +25,18 @@ class Relu(Module):
         # l'(s) = l'(x) * dsigma(s)  point-wise product
         # grad_wrt_output is l'(x), which is dl/dx
         dsigma_s = self.s.sign().clamp(min=0)
-        return grad_wrt_output * dsigma_s
+        return dsigma_s * grad_wrt_output
 
     def param(self):
         """"
         Return a list of pairs, each composed of a parameter tensor, and a gradient tensor of same size.
         This list should be empty for parameterless modules (e.g. ReLU).
         """
-        return [None, None]
+        return [(None, None)]
 
 
 class Tanh(Module):
     """
-        Input: Module
         Method: forward()
                 backward()
     """
@@ -61,8 +59,5 @@ class Tanh(Module):
         return grad_wrt_output * dsigma_s
 
     def param(self):
-        """"
-        Return a list of pairs, each composed of a parameter tensor, and a gradient tensor of same size.
-        This list should be empty for parameterless modules (e.g. ReLU).
-        """
-        return [None, None]
+        return [(None, None)]
+

@@ -2,9 +2,7 @@
 
 import math
 import torch
-
-# disable the auto_grad
-torch.set_grad_enabled(False)
+from torch import FloatTensor, LongTensor, Tensor
 
 
 # ------------------ Classes ------------------
@@ -33,9 +31,20 @@ class LossMSE:
         pass
 
     @staticmethod
-    def calculate_mse(predictions, targets):
+    def calc_loss(predictions, targets):
+        """
+            calculate MSE loss
+        """
         return (targets - predictions).pow(2).mean()
 
     @staticmethod
     def grad_wrt_loss(predictions, targets):
-        return -2 * (targets - predictions).mean()
+        return -2 * (targets - predictions)
+
+
+def generate_data(nb_samples):
+    inputs = torch.empty(nb_samples, 2).uniform_(0, 1)
+    center = Tensor([0.5, 0.5]).view(1, -1)
+    distances = torch.norm((inputs - center).abs(), 2, 1)
+    labels = (distances < 1 / math.sqrt(2 * math.pi)).type(LongTensor)
+    return inputs.t(), labels
