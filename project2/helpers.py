@@ -39,7 +39,8 @@ class LossMSE:
 
     @staticmethod
     def grad_wrt_loss(predictions, targets):
-        return -2 * (targets - predictions)
+        grad = -2 * (targets - predictions)
+        return grad
 
 
 def generate_data(nb_samples):

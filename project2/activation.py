@@ -34,6 +34,9 @@ class Relu(Module):
         """
         return [(None, None)]
 
+    def moment(self):
+        return [(None, None, None)]
+
 
 class Tanh(Module):
     """
@@ -54,10 +57,13 @@ class Tanh(Module):
     def backward(self, grad_wrt_output):
         # l'(s) = l'(x) * dsigma(s)  point-wise product
         # grad_wrt_output is l'(x), which is dl/dx
-        # dsigma(s) = (tanh_s)' = 1 - (tanh_s)^2
-        dsigma_s = 1 - self.s.tanh()**2
-        return grad_wrt_output * dsigma_s
+        # d_sigma(s) = (tanh_s)' = 1 - (tanh_s)^2
+        d_sigma_s = 1 - self.s.tanh()**2
+        return grad_wrt_output * d_sigma_s
 
     def param(self):
         return [(None, None)]
+
+    def moment(self):
+        return [(None, None, None)]
 

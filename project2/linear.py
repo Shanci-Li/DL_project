@@ -17,9 +17,11 @@ class Linear(Module):
         # w: weights b:bias x:input data dw:gradient of w db:gradients of b
         self.w = torch.empty(out_features, in_features).normal_()
         self.b = torch.empty(out_features, 1).normal_()
-        self.x = 0
         self.dw = torch.zeros(self.w.size())
         self.db = torch.zeros(self.b.size())
+        self.momentum_dw = torch.zeros(self.w.size())
+        self.momentum_db = torch.zeros(self.b.size())
+        self.x = 0
 
     def forward(self, inputs):
         # s_(l+1) = w_(l+1) @ x_l + b_(l+1)
@@ -32,6 +34,7 @@ class Linear(Module):
         # db = ds
         # dw = ds @ x_(l-1).T
         # dx_(l-1) = w.T @ ds
+        self.momentum_dw, self.momentum_db = self.dw, self.db
         self.db = grad_wrt_output
         self.dw = grad_wrt_output.mm(self.x.t())
         grad_wrt_inputs = self.w.t().mm(grad_wrt_output)
@@ -39,3 +42,6 @@ class Linear(Module):
 
     def param(self):
         return [(self.w, self.dw), (self.b, self.db)]
+
+    def moment(self):
+        return [(self.w, self.dw, self.momentum_dw), (self.b, self.db, self.momentum_db)]

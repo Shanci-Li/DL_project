@@ -31,6 +31,12 @@ class Sequential(Module):
             parameters.append(module.param())
         return parameters
 
+    def moment(self):
+        momentum = []
+        for module in self.modules:
+            momentum.append(module.moment())
+        return momentum
+
     def fit(self, train_inputs, train_targets, test_inputs, test_targets,
             loss, optimizer, nb_epoch, batch_size, lr):
         for e in range(nb_epoch):
