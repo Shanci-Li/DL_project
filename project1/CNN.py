@@ -45,7 +45,7 @@ def train_CNN(model, train_input, train_classes, train_target, mini_batch_size =
     losses = []
     
     for e in range(nb_epochs):
-        print('-> epoch {0}'.format(e))
+        #print('-> epoch {0}'.format(e))
         train_loss = 0
         #train the model
         for b in range(0, train_input.size(0), mini_batch_size):
