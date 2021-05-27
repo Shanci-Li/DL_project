@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 from torch.autograd import Variable
+import pickle # for accuracies saving
 import math
 import dlc_practical_prologue as prologue
 
@@ -40,10 +41,11 @@ def train_CNN(model, train_input, train_classes, train_target, mini_batch_size =
     criterion = nn.CrossEntropyLoss()
     # specify optimizer
     optimizer = torch.optim.SGD(model.parameters(), lr)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
     losses = []
     
     for e in range(nb_epochs):
-        #print('-> epoch {0}'.format(e))
+        print('-> epoch {0}'.format(e))
         train_loss = 0
         #train the model
         for b in range(0, train_input.size(0), mini_batch_size):
@@ -54,7 +56,8 @@ def train_CNN(model, train_input, train_classes, train_target, mini_batch_size =
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        #print('Epoch: {} \tTraining Loss: {:.6f}'.format(e+1, train_loss))
+        scheduler.step()
+        print('Epoch: {} \tTraining Loss: {:.6f}'.format(e+1, train_loss))
         losses.append(train_loss)
     return losses
 

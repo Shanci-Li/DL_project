@@ -10,7 +10,7 @@ import dlc_practical_prologue as prologue
 define the baseline model: multi-layer perceptron
 """
 class MLP(nn.Module):
-    def __init__(self, nb_hidden):
+    def __init__(self):
         super(MLP, self).__init__()
         self.fc_1 = nn.Linear(392, 128)
         self.fc_2 = nn.Linear(128, 32)

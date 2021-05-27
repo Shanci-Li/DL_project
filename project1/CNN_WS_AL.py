@@ -22,8 +22,8 @@ class CNN_WS_AL(nn.Module):
         self.fc2 = nn.Linear(nb_hidden, 10)
         
         #full connected layer to process concatted result of two  digits
-        self.fc3 = nn.Linear(20 , 16)
-        self.fc4 = nn.Linear(16 , 2)
+        self.fc3 = nn.Linear(20 , 64)
+        self.fc4 = nn.Linear(64 , 2)
     def forward(self,x):
         """
         In auxiliary loss and weight sharing model, separate the original data to digit1 and digit2 first
