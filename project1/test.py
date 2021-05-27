@@ -26,7 +26,7 @@ losses_lists = {}
 train_accuracys = {}
 test_accuracys = {}
 for m in range (1,5):
-    print("Training with model {}".format(training_models[m-1]))
+    print("Training with model {}".format(names[m-1]))
     if m == 1:
         #for each model, set the optimal hyper-parameters
         mini_batch_size = 50

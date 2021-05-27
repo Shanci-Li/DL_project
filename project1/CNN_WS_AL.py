@@ -154,7 +154,7 @@ def evaluate_accuracy(model_class, train_iter = 20, size = 1000, mini_batch_size
     for n in range(train_iter):
         print('>>> Training {0}'.format(n))
         # set the manual seed to make the result reproducible, to guarantee the randomness of data, change the seed every time
-        torch.manual_seed(n)
+        #torch.manual_seed(n)
         model= model_class
         #apply the weight initialization in the begining of every iteration
         model.apply(weights_init)
