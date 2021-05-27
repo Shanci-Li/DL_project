@@ -50,7 +50,7 @@ for m in range (1,5):
         losses_lists[m-1], train_accuracys[m-1], test_accuracys[m-1] = CNN_WS_AL.evaluate_accuracy(model, train_iter, size, mini_batch_size, lr, nb_epochs, loss_ratio,momentum)
 # print the performance of each model
 for m in range(1,5):
-    print("The result of the model {}".format(training_models[m-1]))
+    print("The result of the model {}".format(names[m-1]))
     #load the accuracy and losses of specific model
     train_acc = train_accuracys[m-1]
     test_acc = test_accuracys[m-1]
