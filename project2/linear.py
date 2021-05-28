@@ -17,8 +17,8 @@ class Linear(Module):
             dw:gradient of w    db:gradients of b
         """
         # initialize all the self parameters
-        self.w = torch.empty(out_features, in_features).normal_()
-        self.b = torch.empty(out_features, 1).normal_()
+        self.w = torch.empty(out_features, in_features).normal_(0, 1)
+        self.b = torch.empty(out_features, 1).normal_(0, 1)
         self.dw = torch.zeros(self.w.size())
         self.db = torch.zeros(self.b.size())
         self.momentum_dw = torch.zeros(self.w.size())
@@ -37,8 +37,8 @@ class Linear(Module):
         # dw = ds @ x_(l-1).T
         # dx_(l-1) = w.T @ ds
         self.momentum_dw, self.momentum_db = self.dw, self.db
-        self.db = grad_wrt_output
-        self.dw = grad_wrt_output.mm(self.x.t())
+        self.db += grad_wrt_output.mean()
+        self.dw += grad_wrt_output.mm(self.x.t()) / grad_wrt_output.size(1)
         grad_wrt_inputs = self.w.t().mm(grad_wrt_output)
         return grad_wrt_inputs
 

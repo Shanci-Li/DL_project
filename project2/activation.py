@@ -27,7 +27,7 @@ class Relu(Module):
         # l'(s) = l'(x) * d_sigma(s)  point-wise product
         # grad_wrt_output is l'(x), which is dl/dx
         d_sigma_s = self.s.sign().clamp(min=0)
-        return d_sigma_s * grad_wrt_output
+        return grad_wrt_output * d_sigma_s
 
     def param(self):
         """"
@@ -60,7 +60,7 @@ class Tanh(Module):
         return self.x
 
     def backward(self, grad_wrt_output):
-        # l'(s) = l'(x) * dsigma(s)  point-wise product
+        # l'(s) = l'(x) * d_sigma(s)  point-wise product
         # grad_wrt_output is l'(x), which is dl/dx
         # d_sigma(s) = (tanh_s)' = 1 - (tanh_s)^2
         d_sigma_s = 1 - self.s.tanh() ** 2
@@ -92,7 +92,7 @@ class Sigmoid(Module):
         return self.x
 
     def backward(self, grad_wrt_output):
-        # l'(s) = l'(x) * dsigma(s)  point-wise product
+        # l'(s) = l'(x) * d_sigma(s)  point-wise product
         # grad_wrt_output is l'(x), which is dl/dx
         # d_sigma(s) = sigmoid(s) * (1 - sigmoid(s))
         d_sigma_s = self.x * (1 - self.x)

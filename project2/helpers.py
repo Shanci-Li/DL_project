@@ -35,14 +35,14 @@ class LossMSE:
         """
             calculate MSE loss
         """
-        return (targets - predictions).pow(2).mean()
+        return (targets.float() - predictions).pow(2).mean()
 
     @staticmethod
     def grad_wrt_loss(predictions, targets):
         """
             calculate gradient of predictions w.r.t. loss   dl/dx
         """
-        grad = -2 * (targets - predictions)
+        grad = -2 * (targets.float() - predictions)
         return grad
 
 

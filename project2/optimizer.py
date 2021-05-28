@@ -21,7 +21,7 @@ class SGD:
                     if dw is None:
                         continue
                     else:
-                        w -= (lr['eta'] * torch.mean(dw, 1, True))
+                        w -= (lr['eta'] * dw)
 
         elif self.method == 'sgd_momentum':
             momentum_list = self.model.moment()
@@ -31,7 +31,7 @@ class SGD:
                     if dw is None:
                         continue
                     else:
-                        w -= (lr['gamma'] * torch.mean(mo_dw, 1, True) + lr['eta'] * torch.mean(dw, 1, True))
+                        w -= (lr['gamma'] * mo_dw + lr['eta'] * dw)
 
     def zero_grad(self):
         param_list = self.model.param()

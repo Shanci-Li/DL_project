@@ -46,25 +46,27 @@ class Sequential(Module):
             # Training
             for b in range(0, train_inputs.size(1), batch_size):
                 # forward pass
-                outputs = self.forward(train_inputs.narrow(1, b, batch_size)).sign().clamp(min=0)
+                outputs = self.forward(train_inputs.narrow(1, b, batch_size))
                 # calculate loss of the epoch and gradients of outputs wrt the loss
-                optimizer.zero_grad()
                 grad_wrt_loss = loss.grad_wrt_loss(outputs, train_targets.narrow(0, b, batch_size))
                 # backward pass
+                optimizer.zero_grad()
                 self.backward(grad_wrt_loss)
                 # updates the weights and bias with learning rate lr
                 optimizer.update(lr)
 
-            tr_predict = self.forward(train_inputs).sign().clamp(min=0)
+            tr_output_prob = self.forward(train_inputs)
+            tr_predict = torch.where(tr_output_prob > 0.5, 1, 0)
             train_acc = (tr_predict == train_targets).sum() / train_targets.size(0) * 100
-            loss_train = loss.calc_loss(tr_predict, train_targets)
+            loss_train = loss.calc_loss(tr_output_prob, train_targets)
             self.train_acc.append(train_acc.item())
             self.train_loss.append(loss_train.item())
 
             # Testing
-            test_predict = self.forward(test_inputs).sign().clamp(min=0)
+            test_output_prob = self.forward(test_inputs)
+            test_predict = torch.where(test_output_prob > 0.5, 1, 0)
             test_acc = (test_predict == test_targets).sum() / test_targets.size(0) * 100
-            loss_test = loss.calc_loss(test_predict, test_targets)
+            loss_test = loss.calc_loss(test_output_prob, test_targets)
             self.test_acc.append(test_acc.item())
             self.test_loss.append(loss_test.item())
 
