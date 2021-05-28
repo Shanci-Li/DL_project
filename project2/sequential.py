@@ -16,6 +16,8 @@ class Sequential(Module):
             self.modules.append(arg)
         self.train_loss = []
         self.test_loss = []
+        self.train_acc = []
+        self.test_acc = []
 
     def forward(self, inputs):
         for module in self.modules:
@@ -39,7 +41,7 @@ class Sequential(Module):
         return momentum
 
     def fit(self, train_inputs, train_targets, test_inputs, test_targets,
-            loss, optimizer, nb_epoch, batch_size, lr):
+            loss, optimizer, nb_epoch, batch_size, lr, print_5epoch):
         for e in range(nb_epoch):
             # Training
             for b in range(0, train_inputs.size(1), batch_size):
@@ -56,17 +58,30 @@ class Sequential(Module):
             tr_predict = self.forward(train_inputs).sign().clamp(min=0)
             train_acc = (tr_predict == train_targets).sum() / train_targets.size(0) * 100
             loss_train = loss.calc_loss(tr_predict, train_targets)
+            self.train_acc.append(train_acc.item())
             self.train_loss.append(loss_train.item())
 
             # Testing
             test_predict = self.forward(test_inputs).sign().clamp(min=0)
             test_acc = (test_predict == test_targets).sum() / test_targets.size(0) * 100
             loss_test = loss.calc_loss(test_predict, test_targets)
+            self.test_acc.append(test_acc.item())
             self.test_loss.append(loss_test.item())
 
-            if e % 5 == 0:
-                print('Epochs: {} \t'.format(e),
-                      'Train Loss: {:.02f} \t'.format(loss_train.item()),
-                      'Train accuracy: {:.02f}% \t'.format(train_acc.item()),
-                      'Test loss: {:.02f} \t'.format(loss_test.item()),
-                      'Test accuracy: {:.02f}%'.format(test_acc.item()))
+            if print_5epoch:
+                if e % 5 == 0:
+                    print('Epochs: {} \t'.format(e),
+                          'Train Loss: {:.02f} \t'.format(loss_train.item()),
+                          'Train accuracy: {:.02f}% \t'.format(train_acc.item()),
+                          'Test loss: {:.02f} \t'.format(loss_test.item()),
+                          'Test accuracy: {:.02f}%'.format(test_acc.item()))
+
+        # Print final training performance
+        print('\nTraining loss : {}'.format(self.train_loss[-1]))
+        print('Training accuracy : {}\n'.format(self.train_acc[-1]))
+
+        # Print final validation performance
+        print('Test loss : {}'.format(self.test_loss[-1]))
+        print('Test accuracy : {}'.format(self.test_acc[-1]))
+
+        return self.train_loss, self.train_acc, self.test_loss, self.test_acc
