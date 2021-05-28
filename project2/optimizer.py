@@ -28,7 +28,7 @@ class SGD:
             for module in momentum_list:
                 for (w, dw, mo_dw) in module:
                     # make sure that the gradients exist
-                    if w is None or dw is None:
+                    if dw is None:
                         continue
                     else:
                         w -= (lr['gamma'] * torch.mean(mo_dw, 1, True) + lr['eta'] * torch.mean(dw, 1, True))
