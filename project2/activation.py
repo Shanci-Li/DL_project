@@ -7,6 +7,7 @@ import math
 
 class Relu(Module):
     """
+        Relu activation layer
         Method: forward()
                 backward()
     """
@@ -17,15 +18,16 @@ class Relu(Module):
         self.x = 0
 
     def forward(self, inputs):
+        # x = sigma(s)
         self.s = inputs
         self.x = self.s.clamp(min=0)
         return self.x
 
     def backward(self, grad_wrt_output):
-        # l'(s) = l'(x) * dsigma(s)  point-wise product
+        # l'(s) = l'(x) * d_sigma(s)  point-wise product
         # grad_wrt_output is l'(x), which is dl/dx
-        dsigma_s = self.s.sign().clamp(min=0)
-        return dsigma_s * grad_wrt_output
+        d_sigma_s = self.s.sign().clamp(min=0)
+        return d_sigma_s * grad_wrt_output
 
     def param(self):
         """"
@@ -35,11 +37,13 @@ class Relu(Module):
         return [(None, None)]
 
     def moment(self):
+        # parameters of the layer when update weights using momentum method
         return [(None, None, None)]
 
 
 class Tanh(Module):
     """
+        Tanh activation layer
         Method: forward()
                 backward()
     """
@@ -50,6 +54,7 @@ class Tanh(Module):
         self.x = 0
 
     def forward(self, inputs):
+        # x = sigma(s)
         self.s = inputs
         self.x = self.s.tanh()
         return self.x

@@ -1,8 +1,4 @@
-import random
-
-from helpers import Module
 import torch
-import math
 
 
 class SGD:
@@ -18,6 +14,7 @@ class SGD:
         # make sure learning rate > 0
         if self.method == 'sgd':
             param_list = self.model.param()
+            # iterate through layers
             for module in param_list:
                 for (w, dw) in module:
                     # make sure that the gradients exist
@@ -38,11 +35,13 @@ class SGD:
 
     def zero_grad(self):
         param_list = self.model.param()
+        # iterate through layers
         for module in param_list:
             for (w, dw) in module:
-                # make sure that the gradients exist
-                if w is None or dw is None:
+                # skip the activation layers
+                if w is None and dw is None:
                     continue
                 else:
+                    # set all the gradients 0
                     dw.fill_(0.)
 

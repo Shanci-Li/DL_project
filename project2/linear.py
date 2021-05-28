@@ -12,9 +12,11 @@ class Linear(Module):
         Initialization of the Linear layer
         :param in_features: number of input units
         :param out_features: number of output units
+        :self parameters:
+            w: weights          b:bias         x:input data
+            dw:gradient of w    db:gradients of b
         """
-        # torch.manual_seed(0)
-        # w: weights b:bias x:input data dw:gradient of w db:gradients of b
+        # initialize all the self parameters
         self.w = torch.empty(out_features, in_features).normal_()
         self.b = torch.empty(out_features, 1).normal_()
         self.dw = torch.zeros(self.w.size())
@@ -41,7 +43,10 @@ class Linear(Module):
         return grad_wrt_inputs
 
     def param(self):
+        # weights and bias in format as list: [(w, dw), (b, db)]
         return [(self.w, self.dw), (self.b, self.db)]
 
     def moment(self):
+        # weights and bias and memory for the epoch before
+        # this is the model.param when using sgd_momentum method
         return [(self.w, self.dw, self.momentum_dw), (self.b, self.db, self.momentum_db)]

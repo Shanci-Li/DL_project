@@ -11,6 +11,7 @@ class Sequential(Module):
     def __init__(self, *args):
         super().__init__()
         self.modules = []
+        # construct the neural network from the *arg input classes
         for arg in args:
             self.modules.append(arg)
         self.train_loss = []

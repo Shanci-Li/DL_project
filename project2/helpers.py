@@ -2,7 +2,7 @@
 
 import math
 import torch
-from torch import FloatTensor, LongTensor, Tensor
+from torch import LongTensor, Tensor
 
 
 # ------------------ Classes ------------------
@@ -39,11 +39,18 @@ class LossMSE:
 
     @staticmethod
     def grad_wrt_loss(predictions, targets):
+        """
+            calculate gradient of predictions w.r.t. loss   dl/dx
+        """
         grad = -2 * (targets - predictions)
         return grad
 
 
 def generate_data(nb_samples):
+    """
+        generate the inputs data points and their labels
+        nb_samples: number of data points
+    """
     inputs = torch.empty(nb_samples, 2).uniform_(0, 1)
     center = Tensor([0.5, 0.5]).view(1, -1)
     distances = torch.norm((inputs - center).abs(), 2, 1)
