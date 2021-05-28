@@ -183,6 +183,6 @@ def evaluate_accuracy(model_class, train_iter = 20, size = 1000, mini_batch_size
         test_accuracy = compute_nb_accuracy(model, test_input, test_target, mini_batch_size)
         train_accuracys.append(train_accuracy)
         test_accuracys.append(test_accuracy)
-        print("Train error:",train_accuracy)
-        print("Test error:",test_accuracy)
+        print("Train accuracy:",train_accuracy)
+        print("Test accuracy:",test_accuracy)
     return losses_vals, train_accuracys, test_accuracys
