@@ -63,7 +63,7 @@ class Tanh(Module):
         # l'(s) = l'(x) * dsigma(s)  point-wise product
         # grad_wrt_output is l'(x), which is dl/dx
         # d_sigma(s) = (tanh_s)' = 1 - (tanh_s)^2
-        d_sigma_s = 1 - self.s.tanh()**2
+        d_sigma_s = 1 - self.s.tanh() ** 2
         return grad_wrt_output * d_sigma_s
 
     def param(self):
@@ -72,3 +72,34 @@ class Tanh(Module):
     def moment(self):
         return [(None, None, None)]
 
+
+class Sigmoid(Module):
+    """
+        Sigmoid activation layer
+        Method: forward()
+                backward()
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.s = 0
+        self.x = 0
+
+    def forward(self, inputs):
+        # x = sigma(s)
+        self.s = inputs
+        self.x = torch.sigmoid(self.s)
+        return self.x
+
+    def backward(self, grad_wrt_output):
+        # l'(s) = l'(x) * dsigma(s)  point-wise product
+        # grad_wrt_output is l'(x), which is dl/dx
+        # d_sigma(s) = sigmoid(s) * (1 - sigmoid(s))
+        d_sigma_s = self.x * (1 - self.x)
+        return grad_wrt_output * d_sigma_s
+
+    def param(self):
+        return [(None, None)]
+
+    def moment(self):
+        return [(None, None, None)]
