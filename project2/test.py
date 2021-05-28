@@ -10,11 +10,11 @@ import matplotlib.pyplot as plt
 torch.set_grad_enabled(False)
 
 # initialize parameters
-lr = {'eta': 0.0005,
+lr = {'eta': 0.01,
       'gamma': 0.5}
 n = 1000
-epochs = 300
-batch_size = 20
+epochs = 100
+batch_size = 1
 
 # Generate dataset
 train_inputs, train_targets = generate_data(n)
