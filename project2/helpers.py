@@ -12,7 +12,7 @@ class Module(object):
         base class to inherit from
     """
 
-    def forward(self, input):
+    def forward(self, inputs):
         raise NotImplementedError
 
     def backward(self, grad_wrt_output):

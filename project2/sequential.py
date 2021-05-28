@@ -14,31 +14,44 @@ class Sequential(Module):
         # construct the neural network from the *arg input classes
         for arg in args:
             self.modules.append(arg)
+
+        # lists to record loss and accuracy
         self.train_loss = []
         self.test_loss = []
         self.train_acc = []
         self.test_acc = []
 
     def forward(self, inputs):
+        # integrate forward pass of modules
         for module in self.modules:
             inputs = module.forward(inputs)
         return inputs
 
     def backward(self, grad_wrt_outputs):
+        # integrate backward pass of modules
         for module in self.modules[::-1]:
             grad_wrt_outputs = module.backward(grad_wrt_outputs)
 
     def param(self):
+        # integrate parameters of modules when using sgd method
         parameters = []
         for module in self.modules:
             parameters.append(module.param())
         return parameters
 
     def moment(self):
+        # integrate parameters of modules when using momentum method
         momentum = []
         for module in self.modules:
             momentum.append(module.moment())
         return momentum
+
+    def adam(self):
+        # integrate parameters of modules when using adam method
+        adam_para = []
+        for module in self.modules:
+            adam_para.append(module.adam())
+        return adam_para
 
     def fit(self, train_inputs, train_targets, test_inputs, test_targets,
             loss, optimizer, nb_epoch, batch_size, lr, print_5epoch):

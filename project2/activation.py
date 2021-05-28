@@ -1,6 +1,5 @@
 from helpers import Module
 import torch
-import math
 
 
 # implements of activation layer: Relu and Tanh
@@ -40,6 +39,10 @@ class Relu(Module):
         # parameters of the layer when update weights using momentum method
         return [(None, None, None)]
 
+    def adam(self):
+        # parameters of the layer when update weights using adam method
+        return [(None, None, None, None, None)]
+
 
 class Tanh(Module):
     """
@@ -72,6 +75,10 @@ class Tanh(Module):
     def moment(self):
         return [(None, None, None)]
 
+    def adam(self):
+        # parameters of the layer when update weights using adam method
+        return [(None, None, None, None, None)]
+
 
 class Sigmoid(Module):
     """
@@ -103,3 +110,7 @@ class Sigmoid(Module):
 
     def moment(self):
         return [(None, None, None)]
+
+    def adam(self):
+        # parameters of the layer when update weights using adam method
+        return [(None, None, None, None, None)]

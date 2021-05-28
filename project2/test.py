@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 torch.set_grad_enabled(False)
 
 # initialize parameters
-lr = {'eta': 0.01,
-      'gamma': 0.8}
+lr = {'eta': 0.001,
+      'gamma': 0.2}
 n = 1000
-epochs = 300
+epochs = 500
 batch_size = 20
 
 # Generate dataset
@@ -27,9 +27,13 @@ model = Sequential(Linear(2, 25), Relu(),
                    Linear(25, 25), Tanh(),
                    Linear(25, 1), Sigmoid())
 
+
+# you can choose among 2 methods: 'sgd', 'momentum' and 'adam'
+optimizer = SGD(model, method='momentum')
 # initialize optimizer and choose the method to update the gradients
-# you can choose among 2 methods: 'sgd' and 'sgd_momentum'
-optimizer = SGD(model, method='sgd_momentum')
+# For adam: if you want to change hyper parameters like beta1, beta2 and eps,
+# please change the parameters in the __init__ function of Linear and SGD class
+
 
 print('optimizer: ', optimizer.method)
 train_loss, train_acc, test_loss, test_acc = model.fit(train_inputs, train_targets, test_inputs, test_targets,
